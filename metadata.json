@@ -1,0 +1,8 @@
+{
+  "name": "PortfolioSpark",
+  "description": "Effortlessly build a professional, fully responsive personal portfolio website tailored to your resume and design preferences.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
