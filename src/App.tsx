@@ -24,76 +24,7 @@ export default function App() {
   } | null>(null);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [showEnterGate, setShowEnterGate] = useState(false);
-
-  const timersRef = useRef<number[]>([]);
-  const fallbackTimerRef = useRef<number | null>(null);
   const spokenRef = useRef(false);
-
-  // Viseme mouth animation handler
-  const showMouthViseme = (v: string) => {
-    const mouthImgs = document.querySelectorAll<HTMLImageElement>('.p-mouth img');
-    mouthImgs.forEach((img) => {
-      if (img.getAttribute('data-v') === v) {
-        img.classList.add('on');
-      } else {
-        img.classList.remove('on');
-      }
-    });
-  };
-
-  const clearMouthTimers = () => {
-    timersRef.current.forEach((t) => clearTimeout(t));
-    timersRef.current = [];
-    if (fallbackTimerRef.current) {
-      clearTimeout(fallbackTimerRef.current);
-      fallbackTimerRef.current = null;
-    }
-    showMouthViseme('');
-  };
-
-  const playWordVisemes = (word: string, delay: number, rate = 0.96) => {
-    const letters = word.replace(/[^a-zA-Z']/g, '');
-    let t = delay || 0;
-    let prev: string | null = null;
-    const CH = 68 / rate;
-
-    const getViseme = (c: string) => {
-      c = c.toLowerCase();
-      if (c === 'a') return 'a';
-      if ('ei'.indexOf(c) > -1) return 'e';
-      if ('ouwy'.indexOf(c) > -1) return 'o';
-      if ('fv'.indexOf(c) > -1) return 'f';
-      if ('mbp'.indexOf(c) > -1) return '';
-      if (/[a-z]/.test(c)) return 'm';
-      return '';
-    };
-
-    for (let i = 0; i < letters.length; i++) {
-      const v = getViseme(letters[i]);
-      if (v === prev && v !== '') {
-        t += CH;
-        continue;
-      }
-      const timeoutId = window.setTimeout(() => showMouthViseme(v), t);
-      timersRef.current.push(timeoutId);
-      prev = v;
-      t += CH;
-    }
-
-    const resetId = window.setTimeout(() => showMouthViseme(''), t + 25);
-    timersRef.current.push(resetId);
-    return t;
-  };
-
-  const playAllVisemes = () => {
-    let t = 0;
-    SPEECH_TEXT.split(/\s+/).forEach((w) => {
-      if (!w) return;
-      t = playWordVisemes(w, t) + 90;
-      if (/[.]$/.test(w)) t += 330;
-      else if (/[,]$/.test(w)) t += 180;
-    });
-  };
 
   const speakVoiceIntro = () => {
     if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
@@ -101,7 +32,6 @@ export default function App() {
 
     try {
       synth.cancel();
-      clearMouthTimers();
 
       const utterance = new SpeechSynthesisUtterance(SPEECH_TEXT);
       const voices = synth.getVoices() || [];
@@ -124,25 +54,21 @@ export default function App() {
       utterance.onstart = () => {
         spokenRef.current = true;
         setIsSpeaking(true);
-        playAllVisemes();
       };
 
       utterance.onend = utterance.onerror = () => {
-        clearMouthTimers();
         setIsSpeaking(false);
       };
 
       synth.speak(utterance);
     } catch {
       setIsSpeaking(false);
-      clearMouthTimers();
     }
   };
 
   const handleToggleSpeak = () => {
     if (isSpeaking) {
       if ('speechSynthesis' in window) window.speechSynthesis.cancel();
-      clearMouthTimers();
       setIsSpeaking(false);
     } else {
       speakVoiceIntro();
@@ -249,7 +175,6 @@ export default function App() {
       if (rafId) cancelAnimationFrame(rafId);
       window.removeEventListener('scroll', onScroll, true);
       window.removeEventListener('resize', onScroll);
-      clearMouthTimers();
     };
   }, []);
 

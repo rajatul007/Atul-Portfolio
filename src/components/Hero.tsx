@@ -143,7 +143,7 @@ export const Hero: React.FC<HeroProps> = ({
             textAlign: 'center',
           }}
         >
-          Hi, i’m atul raj
+          Hi, i’m atul
         </h1>
       </div>
 
@@ -212,54 +212,80 @@ export const Hero: React.FC<HeroProps> = ({
 
                 <div className="p-img">
                   {customPhoto ? (
-                    <img
-                      src={customPhoto}
-                      alt="Atul Raj"
-                      draggable={false}
-                      className="rounded-t-full object-cover"
-                    />
-                  ) : (
-                    <>
+                    <div className="relative mx-auto w-full aspect-[4/4.8] max-w-[380px] overflow-hidden rounded-t-[180px] border border-[#D7E2EA]/20 bg-[#141416] shadow-2xl">
                       <img
-                        src="/assets/portrait.webp"
-                        alt="Illustrated portrait of Atul Raj"
+                        src={customPhoto}
+                        alt="Atul Raj"
                         draggable={false}
+                        className="w-full h-full object-cover object-top"
                       />
-                      <div className="p-blink">
-                        <img src="/assets/blink.png" alt="" draggable={false} />
+                      <button
+                        type="button"
+                        onClick={() => fileInputRef.current?.click()}
+                        title="Change photo"
+                        className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 inline-flex items-center gap-1.5 rounded-full bg-black/80 border border-[#D7E2EA]/30 px-3 py-1 text-[11px] uppercase tracking-wider text-[#D7E2EA] hover:border-[#B600A8] transition-colors cursor-pointer"
+                      >
+                        <Camera className="w-3 h-3" />
+                        Change Photo
+                      </button>
+                    </div>
+                  ) : (
+                    /* High-tech AR (Atul Raj) Developer Crest — replaces previous reference person photo */
+                    <div className="relative mx-auto w-full aspect-[4/4.6] max-w-[390px] flex flex-col items-center justify-center rounded-t-[190px] border border-[#D7E2EA]/20 bg-gradient-to-b from-[#18181D] via-[#121215] to-[#0C0C0C] px-6 pt-10 pb-16 shadow-2xl overflow-hidden select-none">
+                      {/* Subtle architectural grid pattern */}
+                      <div
+                        className="absolute inset-0 opacity-25 pointer-events-none"
+                        style={{
+                          backgroundImage:
+                            'linear-gradient(rgba(215,226,234,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(215,226,234,0.08) 1px, transparent 1px)',
+                          backgroundSize: '24px 24px',
+                        }}
+                      />
+
+                      {/* Glowing center ring with AR typography */}
+                      <div className="relative z-10 w-32 h-32 sm:w-36 sm:h-36 rounded-full flex items-center justify-center border-2 border-[#D7E2EA]/30 bg-[#0C0C0C]/90 shadow-[0_0_60px_rgba(182,0,168,0.4)]">
+                        <span className="hero-heading text-5xl sm:text-6xl font-black tracking-tighter">
+                          AR
+                        </span>
                       </div>
-                      <div className="p-mouth" aria-hidden="true">
-                        <img data-v="a" src="/assets/mouth_a.png" alt="" draggable={false} />
-                        <img data-v="e" src="/assets/mouth_e.png" alt="" draggable={false} />
-                        <img data-v="o" src="/assets/mouth_o.png" alt="" draggable={false} />
-                        <img data-v="f" src="/assets/mouth_f.png" alt="" draggable={false} />
-                        <img data-v="m" src="/assets/mouth_m.png" alt="" draggable={false} />
+
+                      <div className="relative z-10 mt-5 text-center">
+                        <div className="text-sm sm:text-base font-semibold uppercase tracking-[0.2em] text-[#D7E2EA]">
+                          Atul Raj
+                        </div>
+                        <div className="mt-1 text-[11px] sm:text-xs font-light uppercase tracking-[0.14em] text-[#D7E2EA]/70">
+                          Full Stack &amp; AI Developer
+                        </div>
+                        <div className="mt-1 text-[10px] uppercase tracking-[0.15em] text-[#BBCCD7]/60">
+                          B.Tech CSE (AI &amp; ML) &apos;27
+                        </div>
                       </div>
-                    </>
+
+                      {/* Upload Photo Button */}
+                      <button
+                        type="button"
+                        onClick={() => fileInputRef.current?.click()}
+                        className="relative z-20 mt-4 inline-flex items-center gap-1.5 rounded-full bg-white/5 hover:bg-white/10 border border-[#D7E2EA]/20 px-3.5 py-1 text-[11px] uppercase tracking-widest text-[#D7E2EA]/80 transition-colors cursor-pointer"
+                        title="Upload your actual photo"
+                      >
+                        <Camera className="w-3 h-3" />
+                        Upload Your Photo
+                      </button>
+                    </div>
                   )}
                 </div>
 
-                <div className="p-badge flex items-center justify-between gap-2">
-                  <div className="flex items-center gap-2">
-                    <span className="p-dot" />
-                    Open to work
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => fileInputRef.current?.click()}
-                    title="Change to personal photo"
-                    className="opacity-40 hover:opacity-100 transition-opacity ml-1 cursor-pointer"
-                  >
-                    <Camera className="w-3 h-3 text-white" />
-                  </button>
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept="image/*"
-                    onChange={handlePhotoUpload}
-                    className="hidden"
-                  />
+                <div className="p-badge">
+                  <span className="p-dot" />
+                  Open to work
                 </div>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={handlePhotoUpload}
+                  className="hidden"
+                />
               </div>
             </div>
           </div>
